@@ -25,23 +25,25 @@ export default function AcademicTimeline() {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-white/[0.12] relative overflow-hidden group">
+    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-emerald-500/35 hover:shadow-[0_0_40px_rgba(16,185,129,0.12)] relative overflow-hidden group">
       
       <div>
         {/* Header Title Section */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
               <GraduationCap className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs font-mono text-zinc-500 tracking-wider uppercase">Academic Record</span>
-              <h3 className="text-xl font-bold text-white tracking-tight">Education & Course Transcripts</h3>
+              <span className="text-xs font-mono text-zinc-500 tracking-wider uppercase">Academic Records</span>
+              <h3 className="text-xl font-bold text-white tracking-tight">M.Sc. Data Science & Software Eng</h3>
             </div>
           </div>
-          <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full font-semibold">
-            CGPA: {selectedDegreeIndex === 0 ? "3.39" : "2.55"} / 4.00
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl font-bold shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+              CGPA: {selectedDegreeIndex === 0 ? "3.39" : "2.55"} / 4.00
+            </span>
+          </div>
         </div>
 
         {/* Custom Tab Switcher */}

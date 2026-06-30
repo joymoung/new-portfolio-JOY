@@ -37,7 +37,7 @@ export default function ContactCard() {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-white/[0.12] relative overflow-hidden group">
+    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-pink-500/35 hover:shadow-[0_0_40px_rgba(236,72,153,0.12)] relative overflow-hidden group">
       
       <div>
         {/* Header Title Section */}

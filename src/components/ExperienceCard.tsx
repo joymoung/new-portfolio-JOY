@@ -35,7 +35,7 @@ export default function ExperienceCard() {
   const currentChart = metricCharts[activeMetric];
 
   return (
-    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-white/[0.12] group relative">
+    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-indigo-500/35 hover:shadow-[0_0_40px_rgba(99,102,241,0.12)] group relative overflow-hidden">
       
       <div>
         {/* Header Title Section */}

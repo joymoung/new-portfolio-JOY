@@ -77,7 +77,7 @@ export default function ThesisPredictor() {
   const currentModel = MODELS.find(m => m.id === selectedModel) || MODELS[0];
 
   return (
-    <div id="thesis-predictor" className="h-full flex flex-col justify-between p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-white/[0.12] group">
+    <div id="thesis-predictor" className="h-full flex flex-col justify-between p-6 md:p-8 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-violet-500/35 hover:shadow-[0_0_40px_rgba(139,92,246,0.12)] group relative overflow-hidden">
       
       {/* Header section */}
       <div>

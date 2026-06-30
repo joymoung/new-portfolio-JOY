@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { Mail, MapPin, Copy, Check, Linkedin, Github, ExternalLink, Sparkles } from "lucide-react";
+import { useState, ChangeEvent, MouseEvent } from "react";
+import { Mail, MapPin, Copy, Check, Linkedin, Github, ExternalLink, Sparkles, Camera, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function ProfileCard() {
   const [copied, setCopied] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(() => {
+    return localStorage.getItem("joy_profile_avatar");
+  });
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("joymoung@gmail.com");
@@ -12,24 +15,66 @@ export default function ProfileCard() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        localStorage.setItem("joy_profile_avatar", base64String);
+        setAvatarUrl(base64String);
+        setImgError(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveAvatar = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    localStorage.removeItem("joy_profile_avatar");
+    setAvatarUrl(null);
+    setImgError(false);
+  };
+
   return (
-    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-white/[0.12] relative overflow-hidden group">
+    <div className="h-full flex flex-col justify-between p-6 md:p-8 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/[0.06] rounded-3xl transition-all duration-500 hover:border-blue-500/35 hover:shadow-[0_0_40px_rgba(59,130,246,0.12)] relative overflow-hidden group">
       
       {/* Dynamic Grid Background Overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.06),transparent_60%)] pointer-events-none" />
 
       <div>
-        {/* Profile Avatar Frame */}
+        {/* Profile Avatar Frame with Interactive Upload */}
         <div className="relative w-28 h-28 mb-6">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 blur-md opacity-40 group-hover:opacity-75 transition-all duration-700" />
-          <div className="absolute inset-0 rounded-2xl bg-zinc-950 border border-white/10 overflow-hidden flex items-center justify-center">
-            {!imgError ? (
+          
+          <input 
+            type="file" 
+            id="avatar-upload" 
+            accept="image/*" 
+            className="hidden" 
+            onChange={handleImageUpload} 
+          />
+
+          <label 
+            htmlFor="avatar-upload" 
+            className="absolute inset-0 rounded-2xl bg-zinc-950 border border-white/10 overflow-hidden flex items-center justify-center cursor-pointer group/avatar relative block w-full h-full"
+          >
+            {avatarUrl && !imgError ? (
               <img 
-                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=300&h=300" 
+                src={avatarUrl} 
                 alt="Jaw Ae Maung (Joy)" 
                 onError={() => setImgError(true)}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover/avatar:scale-105"
+              />
+            ) : (!imgError ? (
+              <img 
+                src="https://i.ibb.co/jkGht29F/Whats-App-Image-2026-06-26-at-8-54-44-PM.jpg" 
+                alt="Jaw Ae Maung (Joy)" 
+                onError={() => setImgError(true)}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover/avatar:scale-105"
               />
             ) : (
               /* Elegant Vector Initial Avatar fallback with glowing particle effects */
@@ -53,32 +98,65 @@ export default function ProfileCard() {
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+            ))}
+
+            {/* Hover Camera Overlay */}
+            <div className="absolute inset-0 bg-black/70 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white text-[10px] font-mono gap-1 select-none">
+              <Camera className="w-4.5 h-4.5 text-blue-400" />
+              <span>Attach Photo</span>
+            </div>
+          </label>
+
+          {/* Remove Image Button if Custom Image exists */}
+          {avatarUrl && (
+            <button 
+              onClick={handleRemoveAvatar}
+              className="absolute -top-1.5 -right-1.5 p-1 rounded-full bg-zinc-950 border border-white/10 text-zinc-400 hover:text-red-400 transition-colors cursor-pointer z-20 shadow-lg"
+              title="Remove photo"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
           
-          <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+          <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 z-10 pointer-events-none">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-zinc-900"></span>
           </span>
         </div>
 
         {/* Identity Information */}
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           <div className="flex items-center gap-1.5">
             <h1 className="text-2xl font-extrabold text-white tracking-tight">Jaw Ae Maung</h1>
             <span className="text-zinc-500 font-medium text-sm">(Joy)</span>
           </div>
-          <p className="text-sm font-semibold text-blue-400 font-mono tracking-wide uppercase">
-            Data Scientist & Software Engineer
-          </p>
-          <p className="text-sm text-zinc-400 leading-relaxed pt-2">
-            Specializing in high-performance model architectures, automated machine learning pipelines, and robust system lifecycles. Expert in translating raw multi-dimensional data into production-grade predictive intelligence.
+          
+          <div className="flex flex-col gap-1 border-l-2 border-blue-500/50 pl-3">
+            <div className="text-xs font-bold text-blue-400 font-mono tracking-wider uppercase">
+              Sales & Marketing Manager
+            </div>
+            <div className="text-xs font-bold text-indigo-400 font-mono tracking-wider uppercase">
+              Data-Driven Software Engineer
+            </div>
+          </div>
+
+          <p className="text-sm text-zinc-400 leading-relaxed pt-1.5">
+            Bridging complex commercial strategy with predictive analytics. Architecting high-integrity data pipelines, custom web applications, and preparing for advanced security operations.
           </p>
         </div>
       </div>
 
+      {/* Cybersecurity prep segment */}
+      <div className="mt-6 p-3 bg-rose-500/5 border border-rose-500/15 rounded-xl flex items-start gap-2.5 z-10 relative">
+        <span className="h-2 w-2 rounded-full bg-rose-500 mt-1.5 animate-pulse flex-shrink-0" />
+        <div className="font-mono text-[10px] leading-normal">
+          <span className="text-rose-400 font-bold uppercase block tracking-wider mb-0.5">Cyber Security Prep</span>
+          <span className="text-zinc-400">Pre-university intake groundwork centering protocol hardening, network penetration audits, and security lifecycle engineering.</span>
+        </div>
+      </div>
+
       {/* Footer / Meta Data / Contact */}
-      <div className="mt-8 space-y-4 pt-4 border-t border-white/[0.04] z-10 relative">
+      <div className="mt-4 space-y-4 pt-4 border-t border-white/[0.04] z-10 relative">
         <div className="flex items-center gap-2.5 text-zinc-400 text-xs font-mono">
           <MapPin className="w-4 h-4 text-zinc-500" />
           <span>Dhaka, Bangladesh</span>
